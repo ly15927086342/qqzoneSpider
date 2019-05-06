@@ -1,0 +1,4 @@
+chart/*
+db/*
+*.log
+__pycache__/*
