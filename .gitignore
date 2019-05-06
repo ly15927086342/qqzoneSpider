@@ -1,4 +1,4 @@
 chart/*
 db/*
-*.log
 __pycache__/*
+*.log
