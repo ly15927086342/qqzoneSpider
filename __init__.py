@@ -168,12 +168,12 @@ class tkGUI(object):
 		self.spider_load.grid(column=2,row=5,sticky=W)
 
 	def visul_init(self):
-		self.img_scatter = PhotoImage(file = 'img/fsux_图表_散点图.png')
-		self.img_bar = PhotoImage(file = 'img/fsux_图表_直方图.png')
-		self.img_pie = PhotoImage(file = 'img/fsux_图表_南丁玫瑰图.png')
-		self.img_heatmap = PhotoImage(file = 'img/fsux_图表_色块图.png')
-		self.img_wordcloud = PhotoImage(file = 'img/fsux_图表_词云.png')
-		self.img_regression = PhotoImage(file = 'img/fsux_图表_回归曲线图.png')
+		self.img_scatter = PhotoImage(file = 'img/fsux_scatter.png')
+		self.img_bar = PhotoImage(file = 'img/fsux_bar.png')
+		self.img_pie = PhotoImage(file = 'img/fsux_pie.png')
+		self.img_heatmap = PhotoImage(file = 'img/fsux_heatmap.png')
+		self.img_wordcloud = PhotoImage(file = 'img/fsux_wordcloud.png')
+		self.img_regression = PhotoImage(file = 'img/fsux_regression.png')
 
 		tkGUI.PaintChart = PaintChart()
 
