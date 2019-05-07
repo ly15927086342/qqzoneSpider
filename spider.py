@@ -7,7 +7,6 @@
 作者邮箱：2014301610173@whu.edu.cn
 '''
 
-from tkinter import *
 from tkinter import messagebox,filedialog
 from tkinter.ttk import Progressbar
 from dbopr  import *
@@ -47,7 +46,7 @@ class QQzoneSpider(object):
 		#driver = webdriver.Chrome(executable_path = "E:\\phantomjs-2.1.1-windows\\bin\\chromedriver.exe")
 		url = "https://qzone.qq.com/"
 		# url = 'https://www.baidu.com/'
-		driver.set_page_load_timeout(15)# 10秒超时
+		driver.set_page_load_timeout(15)# 15秒超时
 		driver.set_script_timeout(15)
 		try:
 			driver.get(url)

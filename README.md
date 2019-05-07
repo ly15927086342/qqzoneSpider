@@ -133,3 +133,28 @@ qq空间页面不是一个静态页面，要获取信息需要动态获取。首
 
 数据库用到了python自带的sqlite3，使用非常简单，可以参考[sqlite3官方文档](https://docs.python.org/3/library/sqlite3.html 'sqlite3官方文档')
 
+## 结语
+
+本想用pyinstaller打包成可执行文件，解决了大部分bug后最终被pyecharts的一些问题给打败了。这里写下打包过程遇到的问题（包括没解决的）：
+
+1. 用网上的.spec打包方式打包，会出现 no module named typedef
+
+**原因：** numpy版本过高<br>
+**解决方式：** --hidden-import sklearn.neighbors.typedefs
+
+2. 可以打包，运行绘图报错 jinja2.exceptions.TemplateNotFound
+
+**原因：** 找不到对应模板<br>
+**解决方式：** 到pip安装的pyecharts文件夹（site-packages/pyecharts）下找到templates文件夹，把里面的html全都复制到可执行程序的目录下
+
+3. 绘制的html无图
+
+**原因：** html没有引用相应的js文件<br>
+**解决方式：** 到网上下载echarts.common.min.js，放在可执行程序目录下，然后在simple_page.html和simple_chart.html中引用直接引用该js文件，注意相对路径
+
+4. 绘制heatmap和wordcloud缺少js
+
+**原因：** 上面引用的js只是基本图像所需的，像heatmap和wordcloud引用的js不止这一个<br>
+**解决方式：** 试着把所需的js引用了，但是还是显示缺少js。头皮发麻，放弃了，如果有解决了告诉我一声。
+
+

@@ -40,6 +40,7 @@ def createDB(sp_ins,dbname,curdir):
 		messagebox.showinfo('通知', '创建成功！')
 		a = list(sp_ins.choosedb_cb['values'])
 		a.append(dbname+'.db')
+		sp_ins.dbchoose_cb['values'] = tuple(a)
 		sp_ins.choosedb_cb['values'] = tuple(a)
 		sp_ins.dbc_cb['values'] = tuple(a)
 
