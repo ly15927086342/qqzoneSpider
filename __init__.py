@@ -65,6 +65,11 @@ class tkGUI(object):
 		self.tab_control.add(self.spider_tab, text='爬虫')
 		self.tab_control.add(self.visul_tab, text='可视化')
 
+		self.dbs = []
+		for filename in os.listdir(tkGUI.config.curdir+'/db/'):
+			if(filename.split('.')[1] == 'db'):
+				self.dbs.append(filename)
+
 		self.db_init()
 		self.spider_init()
 		self.visul_init()
@@ -94,13 +99,11 @@ class tkGUI(object):
 		self.dbtable_tree.heading('tid',text='tid')
 		self.dbtable_tree.heading('createtime',text='发表时间')
 
-		dbs = []
-		for filename in os.listdir(tkGUI.config.curdir+'/db/'):
-			if(filename.split('.')[1] == 'db'):
-				dbs.append(filename)
+		
 
-		self.dbchoose_cb = Combobox(self.db_tab,values=dbs)
-		self.dbchoose_cb.current(0)
+		self.dbchoose_cb = Combobox(self.db_tab,values=self.dbs)
+		if(len(self.dbs) > 0):
+			self.dbchoose_cb.current(0)
 
 		# self.dbchoose_btn = Button(self.db_tab,text='选择',command=lambda : chooseDB(self,tkGUI.config.curdir),bg="#BAE0E8",padx=10,)
 		self.dbwatch_btn = Button(self.db_tab,text='查看',command=lambda : getDBData(self,self.dbchoose_cb.get(),tkGUI.config.tablename,tkGUI.config.curdir),bg="#BAE0E8",padx=10,)
@@ -123,18 +126,16 @@ class tkGUI(object):
 		ph.set(tkGUI.config.phfilepath)
 		ac = StringVar()
 		ac.set(tkGUI.config.account)
-		dbs = []
-		for filename in os.listdir(tkGUI.config.curdir+'/db/'):
-			if(filename.split('.')[1] == 'db'):
-				dbs.append(filename)
+		
 
 		# self.phantomjs_lb = Label(self.spider_tab, text= 'phantomjs位置',padx=10,pady=10,font=('微软雅黑'))
 		# self.phantomjs_entry = Entry(self.spider_tab,width=30,state='disabled',textvariable=ph)
 		# self.phantomjs_btn = Button(self.spider_tab,text='选择',command=lambda : choosePhantom(self,tkGUI.config),bg="#BAE0E8",padx=10,)
 
 		self.choosedb_lb = Label(self.spider_tab,text="选择数据库",padx=10,pady=10,font=('微软雅黑'))
-		self.choosedb_cb = Combobox(self.spider_tab,values=dbs)
-		self.choosedb_cb.current(0)
+		self.choosedb_cb = Combobox(self.spider_tab,values=self.dbs)
+		if(len(self.dbs) > 0):
+			self.choosedb_cb.current(0)
 
 		self.account_lb = Label(self.spider_tab, text= '你的账号',padx=10,pady=10,font=('微软雅黑'))
 		self.account_entry = Entry(self.spider_tab,width=30,textvariable=ac)
@@ -176,14 +177,12 @@ class tkGUI(object):
 
 		tkGUI.PaintChart = PaintChart()
 
-		dbs = []
-		for filename in os.listdir(tkGUI.config.curdir+'/db/'):
-			if(filename.split('.')[1] == 'db'):
-				dbs.append(filename)
+		
 		
 		self.dbc_lb = Label(self.visul_tab,text='选择数据源',padx=10,pady=10,font=('微软雅黑'))
-		self.dbc_cb = Combobox(self.visul_tab,values=dbs)
-		self.dbc_cb.current(0)
+		self.dbc_cb = Combobox(self.visul_tab,values=self.dbs)
+		if(len(self.dbs) > 0):
+			self.dbc_cb.current(0)
 		self.intro_lb = Label(self.visul_tab,text='点击以下按钮，获得分析图。热力图在右侧输入年份',padx=10,pady=10,font=('微软雅黑'))
 		self.year_entry = Entry(self.visul_tab)
 		self.btn_bar = Label(self.visul_tab)

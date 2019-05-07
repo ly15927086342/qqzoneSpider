@@ -16,7 +16,7 @@
 * `dbopr.py` 数据库操作模块
 * `spider.py` 爬虫模块
 * `visualization.py` 可视化模块
-* `stopword.dat` 说说内容剔除字符串列表文件
+* `stopword.dat` 说说内容剔除字符串列表文件，来源[垃圾短信词频统计](https://github.com/shaonianruntu/SMS-Spam-Word-Frequency-Statistics "垃圾短信词频统计")，有所修改
 
 ## 安装
 
@@ -58,7 +58,7 @@ Windows 10
 
 ## 使用说明
 
-**操作步骤**
+#### 操作步骤
 
 1. 安装好所有的依赖库
 
@@ -93,7 +93,7 @@ Windows 10
 
 ## 原理
 
-**爬虫原理介绍**
+#### 爬虫原理介绍
 
 qq空间页面不是一个静态页面，要获取信息需要动态获取。首先要模拟登陆，这里用到的是无界面浏览器phantomjs，利用selenium调用phantomjs.exe进行模拟登陆，从返回的页面中获取qzonetoken，从返回头中获取cookie信息，然后根据加密函数（spider.py get_g_tk()）对cookie中的p_skey字段进行加密，得到g_tk参数。
 
@@ -111,7 +111,7 @@ qq空间页面不是一个静态页面，要获取信息需要动态获取。首
 
 详细的原理可以参考18年我写的博文[通过Python爬取QQ空间说说并通过Pyechart进行可视化分析](https://blog.csdn.net/lyandgh/article/details/82945942 "通过Python爬取QQ空间说说并通过Pyechart进行可视化分析")
 
-**GUI原理介绍**
+#### GUI原理介绍
 
 本爬虫用到的GUI库是python自带的tkinter，我也是刚学，发现非常容易，分享一个自己学习的时候建的repo[Tkinter-simple-demo](https://github.com/ly15927086342/Tkinter-simple-demo "Tkinter-simple-demo")。
 
@@ -119,13 +119,15 @@ qq空间页面不是一个静态页面，要获取信息需要动态获取。首
 
 [Tkinter官方文档](https://docs.python.org/zh-cn/3/library/tk.html "Tkinter官方文档")
 
-**可视化原理介绍**
+#### 可视化原理介绍
 
 可视化用到的是0.5版本的pyecharts，就是Echarts的python库，用法很简单，但要注意0.5和1.0版本完全不兼容，所以只能下载旧版的pyecharts才能正常使用本软件。
 
 [pyecharts0.5官方文档](https://05x-docs.pyecharts.org/#/zh-cn/prepare 'pyecharts0.5官方文档')
 
-**数据库原理介绍**
+界面用到的图表图片来自[iconfont](https://www.iconfont.cn/search/index?q=%E5%9B%BE%E8%A1%A8&page=3 "iconfont")
+
+#### 数据库原理介绍
 
 数据库用到了python自带的sqlite3，使用非常简单，可以参考[sqlite3官方文档](https://docs.python.org/3/library/sqlite3.html 'sqlite3官方文档')
 
