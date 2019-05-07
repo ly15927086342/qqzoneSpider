@@ -39,15 +39,16 @@ class QQzoneSpider(object):
 	    return hashes & 0x7fffffff
 
 	def start_login(self,conf):
-		desired_cap = DesiredCapabilities.PHANTOMJS.copy()
+		# desired_cap = DesiredCapabilities.PHANTOMJS.copy()
 		# 修改请求头中的UA
-		desired_cap['phantomjs.page.settings.userAgent'] = headers['User-Agent']
-		driver = webdriver.PhantomJS(executable_path = conf.phfilepath,desired_capabilities=desired_cap)
+		# desired_cap['phantomjs.page.settings.userAgent'] = headers['User-Agent']
+		# driver = webdriver.PhantomJS(executable_path = conf.phfilepath,desired_capabilities=desired_cap)
+		driver = webdriver.PhantomJS(executable_path = conf.phfilepath)
 		#driver = webdriver.Chrome(executable_path = "E:\\phantomjs-2.1.1-windows\\bin\\chromedriver.exe")
 		url = "https://qzone.qq.com/"
 		# url = 'https://www.baidu.com/'
-		driver.set_page_load_timeout(10)# 10秒超时
-		driver.set_script_timeout(10)
+		driver.set_page_load_timeout(15)# 10秒超时
+		driver.set_script_timeout(15)
 		try:
 			driver.get(url)
 			driver.switch_to.frame('login_frame')
@@ -135,7 +136,6 @@ class QQzoneSpider(object):
 			if not re.search('lbs',test):
 				self.tk_ins.spider_pb['value'] = 100
 				self.tk_ins.spider_load.configure(text = '下载完成')
-				print('%s说说下载完成' % 952700304)
 				break
 			else:
 				# print(Data['msglist'])
@@ -151,7 +151,6 @@ class QQzoneSpider(object):
 			print("pos {0} suc".format(hassp))
 		self.tk_ins.spider_pb['value'] = 100
 		self.tk_ins.spider_load.configure(text = '完毕')
-		print('%s说说下载完成' % 952700304)
 		conn.close()
 		#print(cookie_dict)
 		#print(json.dumps(msg[0],indent=4,ensure_ascii=False))

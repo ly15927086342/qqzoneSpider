@@ -45,17 +45,24 @@ def regex_change(line):
         (周五) | 
         (周六)
     """, re.VERBOSE)
+    #剔除表情[em]e1232[/em]faf[em]e7552[/em]
+    face_regex = re.compile(r"(\[em\]e\d+\[\/em\])")
+    #剔除@用户@{uin:df,who:fsdf,nic:sdf}
+    user_regex = re.compile(r"(\@\{[\s\S]*?\})")
     #剔除所有数字
     decimal_regex = re.compile(r"[^a-zA-Z]\d+")
-    eng_regex = re.compile(r"[a-zA-Z]")
+    # eng_regex = re.compile(r"[a-zA-Z]")
     #剔除空格
     space_regex = re.compile(r"\s+")
 
-    line = username_regex.sub(r"", line)
+    # line = username_regex.sub(r"", line)
+    # line = data_regex.sub(r"", line)
+    # line = decimal_regex.sub(r"", line)
+    # line = eng_regex.sub(r"",line)
+
+    line = face_regex.sub(r"",line)
+    line = user_regex.sub(r"",line)
     line = url_regex.sub(r"", line)
-    line = data_regex.sub(r"", line)
-    line = decimal_regex.sub(r"", line)
-    line = eng_regex.sub(r"",line)
     line = space_regex.sub(r"", line)
     return line
 
@@ -92,7 +99,6 @@ def max_min(data):
 	createtime_min = createtime.min()
 	createtime_max = createtime.max()
 	return cmtnum_min,cmtnum_max,likenum_min,likenum_max,createtime_min,createtime_max
-
 
 #二维数组按列排序
 def rankcol(data,colnum,order):
@@ -183,9 +189,9 @@ class PaintChart(object):
 		items = list(count.items())#元组列表
 		items.sort(key=lambda x:x[1],reverse=True)
 		items = delete_stopwords(items)
-		# for i in range(10):
-		# 	word,count = items[i]
-		# 	print("{0:<10}{1:>5}".format(word,count))
+		for i in range(10):
+			word,count = items[i]
+			print("{0:<10}{1:>5}".format(word,count))
 		wordcloud = WordCloud(width=800, height=600)
 		wordcloud.add("Top20个人说说词云", [items[i][0] for i in range(20)], [items[i][1] for i in range(20)], word_size_range=[30, 100])
 		wordcloud.render(self.path+'wordcloud_'+str(int(time.time()))+'.html')

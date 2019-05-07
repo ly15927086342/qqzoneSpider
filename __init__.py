@@ -55,7 +55,7 @@ class tkGUI(object):
 		tkGUI.config = conf
 		window = Tk()
 		window.geometry('650x400')
-		window.title('qq空间说说爬虫分析器（注意：请合理使用爬虫，以防账号被封。“盗”亦有道->_<-）')
+		window.title('qq空间说说爬虫分析器   | 注意：请合理使用爬虫，以防账号被封。“盗”亦有道 >_<')
 		self.tab_control = ttk.Notebook(window)
 		self.db_tab = ttk.Frame(self.tab_control)
 		self.spider_tab = ttk.Frame(self.tab_control)
@@ -78,7 +78,7 @@ class tkGUI(object):
 		self.dbname_btn = Button(self.db_tab,text='创建',command=lambda : createDB(self,self.dbname_entry.get(),tkGUI.config.curdir),bg="#BAE0E8",padx=10,)
 
 		self.dbchoose_lb = Label(self.db_tab, text= '浏览数据库',padx=10,pady=10,font=('微软雅黑'))
-		self.dbchoose_entry = Entry(self.db_tab,width=30,state='disabled')
+		# self.dbchoose_entry = Entry(self.db_tab,width=30,state='disabled')
 		column = ('id','comment','cmtnum','likenum','tid','createtime')
 		self.dbtable_tree = ttk.Treeview(self.db_tab,columns = column,show='headings')
 		self.dbtable_tree.column('id',width=30)
@@ -93,20 +93,29 @@ class tkGUI(object):
 		self.dbtable_tree.heading('likenum',text='点赞数')
 		self.dbtable_tree.heading('tid',text='tid')
 		self.dbtable_tree.heading('createtime',text='发表时间')
-		self.dbchoose_btn = Button(self.db_tab,text='选择',command=lambda : chooseDB(self,tkGUI.config.curdir),bg="#BAE0E8",padx=10,)
-		self.dbwatch_btn = Button(self.db_tab,text='查看',command=lambda : getDBData(self,self.dbchoose_entry.get(),tkGUI.config.tablename),bg="#BAE0E8",padx=10,)
-		self.dbdelete_btn = Button(self.db_tab,text='清空',command=lambda : deleteAll(self,self.dbchoose_entry.get(),tkGUI.config.tablename),bg='#BAE0E8',padx=10)
+
+		dbs = []
+		for filename in os.listdir(tkGUI.config.curdir+'/db/'):
+			if(filename.split('.')[1] == 'db'):
+				dbs.append(filename)
+
+		self.dbchoose_cb = Combobox(self.db_tab,values=dbs)
+		self.dbchoose_cb.current(0)
+
+		# self.dbchoose_btn = Button(self.db_tab,text='选择',command=lambda : chooseDB(self,tkGUI.config.curdir),bg="#BAE0E8",padx=10,)
+		self.dbwatch_btn = Button(self.db_tab,text='查看',command=lambda : getDBData(self,self.dbchoose_cb.get(),tkGUI.config.tablename,tkGUI.config.curdir),bg="#BAE0E8",padx=10,)
+		self.dbdelete_btn = Button(self.db_tab,text='清空',command=lambda : deleteAll(self,self.dbchoose_cb.get(),tkGUI.config.tablename),bg='#BAE0E8',padx=10)
 
 		self.dbname_lb.grid(column=0, row=0,sticky=W)
-		self.dbname_entry.grid(column=1,row=0)
+		self.dbname_entry.grid(column=1,row=0,sticky=W+E)
 		self.dbname_btn.grid(column=2,row=0)
 
 		self.dbchoose_lb.grid(column=0,row=1,sticky=W)
-		self.dbchoose_entry.grid(column=1,row=1)
-		self.dbchoose_btn.grid(column=2,row=1,padx=10)
-		self.dbwatch_btn.grid(column=3,row=1,padx=10)	
-		self.dbdelete_btn.grid(column=4,row=1,padx=10)
-		self.dbtable_tree.grid(column=0,row=2,columnspan=5,sticky=E+W,padx=10)
+		self.dbchoose_cb.grid(column=1,row=1,sticky=W+E)
+		# self.dbchoose_btn.grid(column=2,row=1,padx=10)
+		self.dbwatch_btn.grid(column=2,row=1,padx=10)	
+		self.dbdelete_btn.grid(column=3,row=1,padx=10)
+		self.dbtable_tree.grid(column=0,row=2,columnspan=4,sticky=E+W,padx=10)
 
 	def spider_init(self):
 		tkGUI.Spider = QQzoneSpider()

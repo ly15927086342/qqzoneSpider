@@ -50,11 +50,11 @@ def chooseDB(db_ins,curdir):
 	fp.set(db_ins.filepath)
 	db_ins.dbchoose_entry.configure(textvariable=fp)
 
-def getDBData(db_ins,dbname,tablename):
+def getDBData(db_ins,dbname,tablename,curdir):
 	if(dbname == ''):
 		messagebox.showwarning('警告', '请选择数据库！')
 		return
-	conn = sqlite3.connect(dbname)
+	conn = sqlite3.connect(curdir+'/db/'+dbname)
 	c = conn.cursor()
 	res = c.execute('select id,comment,cmtnum,likenum,tid,createtime from ' + tablename).fetchall()
 	items = db_ins.dbtable_tree.get_children()
@@ -105,3 +105,10 @@ def choosePhantom(self,conf):
 def saveAccount(conf):
 	with open(conf.curdir+'/db/account.txt','w') as f:
 		f.write(conf.account)
+
+def sqlopr(conn,cur,item,tablename):
+	number = cur.execute("select * from "+tablename+" where tid = '"+item['tid']+"'").fetchall()
+	if len(number) > 0:
+		return
+	cur.execute("insert into "+tablename+" (comment,cmtnum,tid,createtime) values (?,?,?,?)",(item['content'],int(item['cmtnum']),item['tid'],item['created_time']))
+	conn.commit()
