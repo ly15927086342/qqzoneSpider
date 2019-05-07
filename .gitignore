@@ -1,4 +1,9 @@
 chart/*
+
 db/*
+
 __pycache__/*
+
 *.log
+
+*.gitignore
