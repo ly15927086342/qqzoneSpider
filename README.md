@@ -17,7 +17,6 @@
 * `visualization.py` 可视化模块
 * `stopword.dat` 说说内容剔除字符串列表文件
 
-
 ## 安装
 
 #### 环境
