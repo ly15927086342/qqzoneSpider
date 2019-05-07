@@ -1,4 +1,5 @@
 # qqzoneSpider
+
 **an interesting spider program (with GUI) <br>for collecting your qqzone information or your qq friends'**
 <br>_这是一款有趣的爬虫程序，用于收集你或者你qq好友的空间信息_
 
