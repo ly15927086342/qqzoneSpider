@@ -22,6 +22,7 @@ import jieba
 import re
 import webbrowser
 
+# 正则过滤
 def regex_change(line):
     #前缀的正则
     username_regex = re.compile(r"^\d+::")
@@ -66,7 +67,7 @@ def regex_change(line):
     line = space_regex.sub(r"", line)
     return line
 
-#按行读取文件，返回文件的行字符串列表
+# 按行读取文件，返回文件的行字符串列表
 def read_file(file_name):
     fp = open(file_name, "r", encoding="utf-8")
     content_lines = fp.readlines()
@@ -76,7 +77,7 @@ def read_file(file_name):
         content_lines[i] = content_lines[i].rstrip("\n")
     return content_lines
 
-#剔除停用词
+# 剔除停用词
 def delete_stopwords(count):
 	stopword_file = "stopwords.dat"
 	stopwords = read_file(stopword_file)
@@ -86,6 +87,7 @@ def delete_stopwords(count):
 			res.append(count[i])
 	return res
 
+# 统计评论数、点赞数、日期的最大最小值
 def max_min(data):
 	# cmtnum,likenum,createtime,comment
 	cmtnum = np.array([i[0] for i in data])
@@ -100,7 +102,7 @@ def max_min(data):
 	createtime_max = createtime.max()
 	return cmtnum_min,cmtnum_max,likenum_min,likenum_max,createtime_min,createtime_max
 
-#二维数组按列排序
+# 二维数组按列排序
 def rankcol(data,colnum,order):
 	'''ar = np.array(data);
 	print(ar.size)
@@ -116,14 +118,17 @@ def rankcol(data,colnum,order):
 	else:#升序
 		return np.argsort(br)
 
+# 按点赞或评论数倒序排列
 def topfunc(data,num,pos):
 	a = rankcol(data,pos,'des')
 	resulta = np.array(data)[a]
 	return resulta[:num,:]
 
+# 展示label
 def label_formatter(params):
 	return params[3]
 		
+# 统计每年的说说数量
 def statistic(data):
 	count = {}
 	for item in data:
@@ -132,11 +137,13 @@ def statistic(data):
 	print(count)
 	return count
 
+# 可视化类
 class PaintChart(object):
-	"""docstring for PaintChart"""
+	# 初始化
 	def __init__(self):
 		super(PaintChart, self).__init__()
 
+	# 绘图入口
 	def Draw(self,sp_ins,curdir,dbname,tablename,chartId):
 		sp_ins.analysis_lb.configure(text='正在生成...')
 		sp_ins.analysis_pb['value'] = 0
@@ -177,6 +184,7 @@ class PaintChart(object):
 			th1 = threading.Thread(target=self.wordcloud, args=())
 			th1.start()
 
+	# 词云
 	def wordcloud(self):
 		cmtlist = [i[3] for i in self.data]
 		for i in range(len(cmtlist)):
@@ -199,6 +207,7 @@ class PaintChart(object):
 		self.ins.analysis_pb['value'] = 100
 		self.ins.analysis_lb.configure(text='完毕')
 
+	# 三维散点
 	def scatter3d(self):
 		for item in self.data:
 			d = datetime.fromtimestamp(item[2])
@@ -213,6 +222,7 @@ class PaintChart(object):
 		self.ins.analysis_pb['value'] = 100
 		self.ins.analysis_lb.configure(text='完毕')
 
+	# 二维散点
 	def scatter(self):
 		cmtnum = []
 		likenum = []
@@ -244,6 +254,7 @@ class PaintChart(object):
 		self.ins.analysis_pb['value'] = 100
 		self.ins.analysis_lb.configure(text='完毕')
 
+	# 线性回归
 	def scatterXY(self):
 		cmtnum = []
 		likenum = []
@@ -271,6 +282,7 @@ class PaintChart(object):
 		self.ins.analysis_pb['value'] = 100
 		self.ins.analysis_lb.configure(text='完毕')
 
+	# 柱状图
 	def bar(self):
 		count = statistic(self.data)
 		attr = []
@@ -287,6 +299,7 @@ class PaintChart(object):
 		self.ins.analysis_pb['value'] = 100
 		self.ins.analysis_lb.configure(text='完毕')
 
+	# 饼图
 	def pie(self):
 		toplike = topfunc(self.data,10,1).tolist();
 		topctm = topfunc(self.data,10,0).tolist();
@@ -332,6 +345,7 @@ class PaintChart(object):
 		self.ins.analysis_pb['value'] = 100
 		self.ins.analysis_lb.configure(text='完毕')
 
+	# 热力图
 	def heatmap(self,year):
 		das = {}
 		for item in self.data:

@@ -12,6 +12,7 @@ from tkinter import messagebox,filedialog
 import sqlite3,os
 from datetime import *
 
+# 创建sqlite数据库
 def createDB(sp_ins,dbname,curdir):
 	if(dbname == ''):
 		print(dbname)
@@ -44,6 +45,7 @@ def createDB(sp_ins,dbname,curdir):
 		sp_ins.choosedb_cb['values'] = tuple(a)
 		sp_ins.dbc_cb['values'] = tuple(a)
 
+# 选择数据库
 def chooseDB(db_ins,curdir):
 	db_ins.filepath = filedialog.askopenfilename(initialdir= os.path.dirname(curdir+'/db/'),filetypes = (("DB files","*.db"),("all files","*.*")))
 	db_ins.dbchoose_entry.select_clear()
@@ -51,6 +53,7 @@ def chooseDB(db_ins,curdir):
 	fp.set(db_ins.filepath)
 	db_ins.dbchoose_entry.configure(textvariable=fp)
 
+# 获取数据库数据用于展示
 def getDBData(db_ins,dbname,tablename,curdir):
 	if(dbname == ''):
 		messagebox.showwarning('警告', '请选择数据库！')
@@ -67,6 +70,7 @@ def getDBData(db_ins,dbname,tablename,curdir):
 		i = i + 1
 	conn.close()
 
+# 获取数据库数据用于可视化
 def getData2Draw(dbname,tablename):
 	data = []
 	if(dbname == ''):
@@ -80,6 +84,7 @@ def getData2Draw(dbname,tablename):
 	conn.close()
 	return data
 
+# 删除数据库所有数据
 def deleteAll(db_ins,dbname,tablename):
 	if(dbname == ''):
 		return
@@ -94,6 +99,7 @@ def deleteAll(db_ins,dbname,tablename):
 	conn.close()
 	messagebox.showinfo('通知', '已清空！')
 
+# 选择phantom路径
 def choosePhantom(self,conf):
 	conf.phfilepath = filedialog.askopenfilename(filetypes = (("phantomjs files","*.exe"),("all files","*.*")))
 	self.phantomjs_entry.select_clear()
@@ -103,10 +109,12 @@ def choosePhantom(self,conf):
 	with open(conf.curdir+'/db/phpos.txt','w') as f:
 		f.write(conf.phfilepath)
 
+# 保存账号信息
 def saveAccount(conf):
 	with open(conf.curdir+'/db/account.txt','w') as f:
 		f.write(conf.account)
 
+# 插入爬取信息
 def sqlopr(conn,cur,item,tablename):
 	number = cur.execute("select * from "+tablename+" where tid = '"+item['tid']+"'").fetchall()
 	if len(number) > 0:

@@ -16,8 +16,9 @@ from visualization import *
 import os
 from datetime import *
 
-
+# 配置类
 class Config(object):
+	# 初始化
 	def __init__(self):
 		super(Config, self).__init__()
 		self.curdir = os.getcwd() # 当前路径
@@ -27,6 +28,7 @@ class Config(object):
 		self.password = ''
 		self.refresh()
 
+	# 更新配置
 	def refresh(self):
 		folder = os.path.exists(self.curdir+'/db/')
 		if not folder: # 判断是否存在文件夹如果不存在则创建为文件夹
@@ -45,17 +47,20 @@ class Config(object):
 			with open(self.curdir+'/db/account.txt','r') as f:
 				self.account = f.readline()
 
+# GUI类
 class tkGUI(object):
-	"""docstring for tkGUI"""
-	config = None
-	Spider = None
-	PaintChart = None
+
+	config = None # 配置类实例
+	Spider = None # 爬虫类实例
+	PaintChart = None # 可视化类实例
+
+	# 界面初始化
 	def __init__(self,conf):
 		super(tkGUI, self).__init__()
 		tkGUI.config = conf
 		window = Tk()
 		window.geometry('650x400')
-		window.title('qq空间说说爬虫分析器   | 注意：请合理使用爬虫，以防账号被封。“盗”亦有道 >_<')
+		window.title('qqzoneSpider   | 注意：请合理使用爬虫，以防账号被封。“盗”亦有道 >_<')
 		self.tab_control = ttk.Notebook(window)
 		self.db_tab = ttk.Frame(self.tab_control)
 		self.spider_tab = ttk.Frame(self.tab_control)
@@ -77,6 +82,7 @@ class tkGUI(object):
 		self.tab_control.pack(expand=1, fill='both')
 		window.mainloop()
 
+	# 数据库界面初始化
 	def db_init(self):
 		self.dbname_lb = Label(self.db_tab, text= '数据库名',padx=10,pady=10,font=('微软雅黑'))
 		self.dbname_entry = Entry(self.db_tab,width=30)
@@ -99,8 +105,6 @@ class tkGUI(object):
 		self.dbtable_tree.heading('tid',text='tid')
 		self.dbtable_tree.heading('createtime',text='发表时间')
 
-		
-
 		self.dbchoose_cb = Combobox(self.db_tab,values=self.dbs)
 		if(len(self.dbs) > 0):
 			self.dbchoose_cb.current(0)
@@ -120,6 +124,7 @@ class tkGUI(object):
 		self.dbdelete_btn.grid(column=3,row=1,padx=10)
 		self.dbtable_tree.grid(column=0,row=2,columnspan=4,sticky=E+W,padx=10)
 
+	# 爬虫界面初始化
 	def spider_init(self):
 		tkGUI.Spider = QQzoneSpider()
 		ph = StringVar()
@@ -167,6 +172,7 @@ class tkGUI(object):
 		self.spider_pb.grid(column=0,row=5,columnspan=2,sticky=E+W,pady=0,padx=10)
 		self.spider_load.grid(column=2,row=5,sticky=W)
 
+	# 可视化界面初始化
 	def visul_init(self):
 		self.img_scatter = PhotoImage(file = 'img/fsux_scatter.png')
 		self.img_bar = PhotoImage(file = 'img/fsux_bar.png')
@@ -177,8 +183,6 @@ class tkGUI(object):
 
 		tkGUI.PaintChart = PaintChart()
 
-		
-		
 		self.dbc_lb = Label(self.visul_tab,text='选择数据源',padx=10,pady=10,font=('微软雅黑'))
 		self.dbc_cb = Combobox(self.visul_tab,values=self.dbs)
 		if(len(self.dbs) > 0):
@@ -225,10 +229,9 @@ class tkGUI(object):
 		self.analysis_pb.grid(column=0,row=3,padx=10,pady=0,sticky=E+W)
 		self.analysis_lb.grid(column=1,row=3,padx=10,pady=0,sticky=W)
 
-
-
+# 主程序入口
 if __name__ == '__main__':
-	conf = Config()
-	app = tkGUI(conf)
+	conf = Config() # 配置
+	app = tkGUI(conf) # 启动界面
 
 	

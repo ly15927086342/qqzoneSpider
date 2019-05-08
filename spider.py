@@ -25,18 +25,21 @@ headers={
 	'User-Agent':'Mozilla/5.0 (compatible; MSIE 9.0; Windows NT 6.1; WOW64; Trident/5.0; SLCC2; .NET CLR 2.0.50727; .NET CLR 3.5.30729; .NET CLR 3.0.30729; Media Center PC 6.0; .NET4.0C; .NET4.0E; QQBrowser/7.0.3698.400)'
 }
 
+# 爬虫类
 class QQzoneSpider(object):
-	"""docstring for QQzoneSpider"""
+	# 初始化
 	def __init__(self):
 		super(QQzoneSpider, self).__init__()
 		self.cookie,self.g_tk,self.qzonetoken = '','',''
-		
+	
+	# 加密获取g_tk参数
 	def get_g_tk(self,cookie):
 	    hashes = 5381
 	    for letter in cookie['p_skey']:
 	        hashes += (hashes << 5) + ord(letter)  # ord()是用来返回字符的ascii码
 	    return hashes & 0x7fffffff
 
+	# 模拟登陆
 	def start_login(self,conf):
 		# desired_cap = DesiredCapabilities.PHANTOMJS.copy()
 		# 修改请求头中的UA
@@ -82,6 +85,7 @@ class QQzoneSpider(object):
 			messagebox.showerror('错误', '登陆超时！可能被封，请在浏览器中访问空间进行确认。如果被封，请等解封后再爬取。')
 			self.tk_ins.spider_load.configure(text = '失败')
 
+	# 爬取说说
 	def spidercmt(self):
 		if(self.cookie == ''):# 未登陆
 			self.cookie,self.g_tk,self.qzonetoken,state = self.start_login(self.conf)
@@ -155,6 +159,7 @@ class QQzoneSpider(object):
 		#print(json.dumps(msg[0],indent=4,ensure_ascii=False))
 		#print(msg[0])
 
+	# 爬取点赞数
 	def spiderlikenum(self):
 		if(self.cookie == ''):# 未登陆
 			self.cookie,self.g_tk,self.qzonetoken,state = self.start_login(self.conf)
@@ -213,6 +218,7 @@ class QQzoneSpider(object):
 		self.tk_ins.spider_load.configure(text = '完毕')
 		conn.close()
 
+	# 启动线程爬取说说
 	def startSpider(self,sp_ins,conf,account,password,dbname,target):
 		sp_ins.spider_load.configure(text='爬虫准备...')
 		sp_ins.spider_pb['value'] =  0
@@ -233,6 +239,7 @@ class QQzoneSpider(object):
 		th1.start()
 		# spidercmt(sp_ins,conf,dbname)
 
+	# 启动线程爬取点赞数
 	def likeNumSpider(self,sp_ins,conf,account,password,dbname,target):
 		sp_ins.spider_load.configure(text='爬虫准备...')
 		sp_ins.spider_pb['value'] =  0
